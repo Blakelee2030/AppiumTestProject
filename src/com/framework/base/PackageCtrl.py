@@ -13,7 +13,7 @@ import re
 import datetime
 import time
 from DeviceInfoCtrl import DeviceController
-from com.framework.core.adb.AdbCommand import AdbCmder
+from com.framework.core.adb.adb import AdbCmder
 '''
 主要处理安装和卸载手机上的应用
 '''

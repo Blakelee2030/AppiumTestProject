@@ -12,26 +12,25 @@
 """
 import os
 import re
-import time
 import subprocess
 import urllib2
 
 from appium import webdriver
-from com.framework.initdriver.InitConfig import InitConfiger
 
-from com.framework.core.adb.AdbCommand import AdbCmder
+from com.framework.core.adb.adb import AdbCmder
+from com.framework.core.init.InitConfig import InitConfiger
 from com.framework.utils.fileutils.ConfigCommonUtil import ConfigController
 from com.framework.utils.reporterutils.LoggingUtil import LoggingController
 
 
-class InitDriverOption(object):
+class InitAppiumDriverImpl(object):
     def __init__(self):
         self.log4py = LoggingController()
         self.run_cfg = InitConfiger()
         self.android = AdbCmder()
         self.run_data = None
 
-    def get_desired_capabilities(self, sno):
+    def __get_desired_capabilities(self, sno):
         device_info = {"udid": sno}
         try:
             result = subprocess.Popen("adb -s %s shell getprop" % sno, shell=True, stdout=subprocess.PIPE,
@@ -51,7 +50,7 @@ class InitDriverOption(object):
         desired_caps.update(desired_caps_conf)
         return desired_caps
 
-    def get_appium_port(self, sno):
+    def __get_appium_port(self, sno):
         """
         这里读取启动服务时生成的那个ini配置文件，读取其中sno对应的状态及服务的port
         :param sno:
@@ -89,7 +88,7 @@ class InitDriverOption(object):
             self.log4py.error(str(port_num) + " port get occupied status failure: " + str(e))
         return flag
 
-    def before_create_driver(self, sno):
+    def __before_create_driver(self, sno):
         """
         在实例appium driver前，进行设备的操作：安装、卸载
         :param sno:
@@ -107,9 +106,9 @@ class InitDriverOption(object):
             self.log4py.info("非首次执行，可以直接进行正常用例操作")
 
     def get_android_driver(self, sno):
-        desired_caps = self.get_desired_capabilities(sno)
-        self.before_create_driver(desired_caps['udid'])
-        port = self.get_appium_port(desired_caps["udid"])
+        desired_caps = self.__get_desired_capabilities(sno)
+        self.__before_create_driver(desired_caps['udid'])
+        port = self.__get_appium_port(desired_caps["udid"])
         if not self.is_port_used(port):
             self.log4py.debug("设备号[{}]对应的appium服务没有启动".format(desired_caps['udid']))
             return None
@@ -117,6 +116,7 @@ class InitDriverOption(object):
         self.log4py.debug(url)
         self.log4py.debug(desired_caps)
         num = 0
+        driver = None
         while num <= 5:
             try:
                 driver = webdriver.Remote(url, desired_caps)
@@ -130,11 +130,4 @@ class InitDriverOption(object):
                 driver.implicitly_wait(10)
             self.log4py.info("webdriver连接信息：{}：{}".format(url, str(desired_caps)))
             return driver
-        return None
-
-
-
-
-
-
-
+        return driver

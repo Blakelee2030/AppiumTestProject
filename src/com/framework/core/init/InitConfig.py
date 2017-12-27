@@ -47,7 +47,7 @@ class InitConfiger(object):
             self.cf.set(section, "pkgName", pkg_name)
             self.cf.set(section, "launchActivity", launch_activity)
             self.cf.set(section, "waitActivity", wait_activity)
-            self.cf.get(section, "apkFilePath", apk_file_path)
+            self.cf.set(section, "apkFilePath", apk_file_path)
             flag = True
         except Exception as e:
             return None

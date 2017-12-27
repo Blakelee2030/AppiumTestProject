@@ -10,7 +10,7 @@
 """
 # 需要安装pychartdir模块
 import string
-from com.framework.core.adb.AdbCommand import AdbCmder
+from com.framework.core.adb.adb import AdbCmder
 from pychartdir import *
 
 

@@ -11,7 +11,7 @@
 import os
 import re
 import time
-from com.framework.core.adb.AdbCommand import AdbCmder
+from com.framework.core.adb.adb import AdbCmder
 from com.framework.utils.reporterutils.LoggingUtil import LoggingController
 
 

@@ -40,7 +40,7 @@ pathconfig.ini中的配置所需项的相对路径，通过getallpath调用confi
 
 
 ## 20170405
-1. 第一封装层的api，不应该有超过3复杂度的设计<br>
+1. 第一封装层的api，不应该有超过4复杂度的设计<br>
 2. 上层如果存在单一的逻辑直接写入底并提供调用方法
 
 
@@ -124,4 +124,9 @@ apk的安装包路径、app的启动activity、app的首页activity<br>
 1. 优化了启动后台appium服务的逻辑，及采用了线程方式来执行启动服务的命令。
 2. 多机执行将会使用multiprocessing.Pool.map_async(caseFunc, driverList)
 3. 启动服务后将bootstrap对应的端口也写入配置文件中，以便关闭appium服务的时候同时关闭该端口
+
+## 20171227
+1. 引入设计模式思想对driver初始装备和api分装进行独立解耦，并隐藏实例化后的driver对象，仅适用api进行全局脚本操作者
+2. 这种做法有什么缺点，就是每次实例化api都要做一次driver的实例化操作，繁琐，并且在并行操作的时候还会影响响应时间
+3. 将driver的创建放到api封装类中，这个修改会在分支dev_171227中
 ## 对appium自动化框架的预想

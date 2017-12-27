@@ -11,8 +11,10 @@
 @file: AppiumBaseApi.py
 @time: 2017/3/28  23:32
 """
+
+from com.framework.core.init.InitAppiumDriver import InitAppiumDriverImpl
 from appium.webdriver.common.touch_action import TouchAction
-from com.framework.core.adb.AdbCommand import AdbCmder
+from com.framework.core.adb.adb import AdbCmder
 from appium.webdriver.common.mobileby import MobileBy as By
 from com.framework.base.GetAllPathCtrl import GetAllPathController
 from com.framework.utils.reporterutils.LoggingUtil import LoggingController
@@ -26,18 +28,35 @@ import random
 PATH = lambda a: os.path.abspath(a)
 
 
-class AppiumDriver(object):
+class AppiumApi(object):
 
-    def __init__(self, driver):
+    def __init__(self, sno):
         self.android = AdbCmder()
         self.log4py = LoggingController()
-        self.driver = driver
+        self.sno = sno
+
+        self.driver = None
+        self.taction = None
+        self.path_get = None
+        self.actions = []
+        self.xml_file_path = None
+        self.pattern = re.compile(r"\d+")
+        self.capturePath = None
+
+    def begin(self):
+        init = InitAppiumDriverImpl()
+        self.driver = init.get_android_driver(self.sno)
+
         self.taction = TouchAction(self.driver)
         self.path_get = GetAllPathController()
-        self.actions = []
         self.xml_file_path = self.path_get.get_dumpxml_path()
-        self.pattern = re.compile(r"\d+")
         self.capturePath = self.path_get.get_capture_path()
+
+    def end(self):
+        """Stop the running application, specified in the desired capabilities, on
+        the device.
+        """
+        self.driver.close_app()
 
     def is_displayed(self, by, value):
         is_displayed = False
@@ -709,11 +728,6 @@ class AppiumDriver(object):
         """
         pass
 
-    def do_close_app(self):
-        """Stop the running application, specified in the desired capabilities, on
-        the device.
-        """
-        self.driver.close_app()
 
     def start_activity(self, app_package, app_activity, **opts):
         """Opens an arbitrary activity during a test. If the activity belongs to

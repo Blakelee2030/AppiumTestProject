@@ -23,6 +23,9 @@ class CreateConfigFile(object):
         self.log4py = LoggingController()
         self.path = (os.getcwd()).split('src')[0] + "\\testconfig"
 
+    def __del__(self):
+        self.cfg.clone()
+
     def set_appium_uuids_ports(self, device_list, port_list):
         """
         遍历list,按照下表进行对应映射
