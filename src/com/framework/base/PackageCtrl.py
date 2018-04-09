@@ -13,14 +13,14 @@ import re
 import datetime
 import time
 from DeviceInfoCtrl import DeviceController
-from com.framework.core.adb.adb import AdbCmder
+from com.framework.core.adb.adb import AndroidDebugBridge
 '''
 主要处理安装和卸载手机上的应用
 '''
 class PackageController():
     def __init__(self):
         self.sno_list = DeviceController().get_devices()
-        self.android = AdbCmder()
+        self.android = AndroidDebugBridge()
     '''
     uninstall_All参数指定要卸载的包名，该方法会调用uninstall_One卸载所有链接在电脑上的手机中的应用
     '''

@@ -21,10 +21,11 @@ class CreateConfigFile(object):
     def __init__(self):
         self.cfg = ConfigParser.ConfigParser()
         self.log4py = LoggingController()
+        self.log4py.info("-----配置文件操作开始-----")
         self.path = (os.getcwd()).split('src')[0] + "\\testconfig"
 
     def __del__(self):
-        self.cfg.clone()
+        self.log4py.info("-----配置文件操作结束-----")
 
     def set_appium_uuids_ports(self, device_list, port_list):
         """

@@ -10,14 +10,14 @@
 """
 # 需要安装pychartdir模块
 import string
-from com.framework.core.adb.adb import AdbCmder
+from com.framework.core.adb.adb import AndroidDebugBridge
 from pychartdir import *
 
 
 class AppPerformanceMonitor():
     def  __init__(self,sno,times,pkg_name):
         # 打开待测应用，运行脚本，默认times为30次（可自己手动修改次数），获取该应用cpu、memory占用率的曲线图，图表保存至chart目录下
-        self.utils = AdbCmder()
+        self.utils = AndroidDebugBridge()
         self.sno = sno
         if times is None or time == "":
             self.times = 30        #top次数

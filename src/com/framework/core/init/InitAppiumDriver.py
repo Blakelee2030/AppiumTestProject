@@ -17,7 +17,7 @@ import urllib2
 
 from appium import webdriver
 
-from com.framework.core.adb.adb import AdbCmder
+from com.framework.core.adb.adb import AndroidDebugBridge
 from com.framework.core.init.InitConfig import InitConfiger
 from com.framework.utils.fileutils.ConfigCommonUtil import ConfigController
 from com.framework.utils.reporterutils.LoggingUtil import LoggingController
@@ -27,7 +27,7 @@ class InitAppiumDriverImpl(object):
     def __init__(self):
         self.log4py = LoggingController()
         self.run_cfg = InitConfiger()
-        self.android = AdbCmder()
+        self.android = AndroidDebugBridge()
         self.run_data = None
 
     def __get_desired_capabilities(self, sno):
@@ -113,8 +113,6 @@ class InitAppiumDriverImpl(object):
             self.log4py.debug("设备号[{}]对应的appium服务没有启动".format(desired_caps['udid']))
             return None
         url = 'http://127.0.0.1:%s/wd/hub' % (port.strip())
-        self.log4py.debug(url)
-        self.log4py.debug(desired_caps)
         num = 0
         driver = None
         while num <= 5:

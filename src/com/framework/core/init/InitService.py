@@ -64,7 +64,7 @@ class ServicePort(object):
                     self.log4py.info(str(port_num) + " 端口已经在使用,对应的进程是：" + str(ip_port[-1]))
                     self.tmp[port_num] = ip_port[-1]
             if not flag:
-                self.log4py.info(str(port_num) + " 端口没有被占用.")
+                self.log4py.info(str(port_num) + " 端口没有对应监听的服务.")
         except Exception, e:
             self.log4py.error(str(port_num) + " port get occupied status failure: " + str(e))
         return flag
@@ -142,7 +142,7 @@ class ServicePort(object):
     def kill_service_on_pid(self, pid):
         if pid is not None:
             os.system("taskkill -F -PID %s" % pid)
-            self.log4py.info("PID：%s 关闭端口服务成功" % pid)
+            self.log4py.info("进程PID：%s 关闭端口服务成功" % pid)
 
     def stop_all_appium_server(self):
         """
@@ -164,14 +164,17 @@ class ServicePort(object):
     def check_service(self, times=5):
         # 检查服务是否已经启动
         begin = time.time()
+        flag = False
         for i in range(len(self.appium_port_list)):
             p = self.appium_port_list[i]
             while time.time() - begin <= times:
-                if self.is_live_service(p):
+                flag = self.is_live_service(p)
+                if flag:
                     self.log4py.info("appium server 端口为{}的服务已经启动,bootstrap监听的端口也已设置好".format(p))
                     # 服务启动正常，就写入配置文件
                     self.cfg.set_appium_uuid_port(self.device_list[i], self.appium_port_list[i], self.bootstrap_port_list[i])
                     break
+            if not flag:
                 self.log4py.info("appium server 端口为{}的服务未启动".format(p))
 
     def start_services(self):

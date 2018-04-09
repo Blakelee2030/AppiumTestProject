@@ -27,45 +27,40 @@ class GetAllPathController(object):
         self.pro_path = self.fkctl.get_project_path()
 
     def get_dumpxml_path(self):
-        self.log4py.info("executive -get_dumpxml_path- function ")
         path = os.path.join(self.pro_path, self.cfgctl.get("dumpxmlPath", "dumpxmlPath"))
         if PATH(path):
-            self.log4py.info("获取 %s"%path)
+            self.log4py.info("获取设备上xml文件的存储绝对路径 %s"%path)
             return path
         return None
 
     def get_htmlreport_path(self):
-        self.log4py.info("executive -get_htmlreport_path- function ")
         path = os.path.join(self.pro_path, self.cfgctl.get("htmlreportPath", "htmlreportPath"))
         if PATH(path):
-            self.log4py.info("获取 %s" % path)
+            self.log4py.info("获取测试框架的测试报告文件绝对路径 %s" % path)
             return path
         return None
 
     def get_logs_path(self):
-        self.log4py.info("executive -get_logs_path- function ")
         path = os.path.join(self.pro_path, self.cfgctl.get("logsPath", "logsPath"))
         if PATH(path):
             if not os.path.exists(path):
                 os.makedirs(path)
-            self.log4py.info("获取 %s" % path)
+            self.log4py.info("获取测试框架的日志绝对路径 %s" % path)
             return path
         return None
 
     def get_capture_path(self):
-        self.log4py.info("executive get_logs_path function ")
         path = os.path.join(self.pro_path, self.cfgctl.get("capturePath", "capturePath"))
         if PATH(path):
-            self.log4py.info("获取 %s" % path)
+            self.log4py.info("获取框架的截图文件存储的绝对路径 %s" % path)
             return path
         return None
 
     def get_appium_logs_path(self):
-        self.log4py.info("executive  get_logs_path  function ")
         path = os.path.join(self.pro_path, self.cfgctl.get("appiumlogPath", "appiumlogPath"))
         if PATH(path):
             if not os.path.exists(path):
                 os.makedirs(path)
-            self.log4py.info("获取到appium服务的日志路径 %s" % path)
+            self.log4py.info("获取到appium服务的日志绝对路径 %s" % path)
             return path.replace("\\", "/")
         return None

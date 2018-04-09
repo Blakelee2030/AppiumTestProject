@@ -14,7 +14,7 @@
 
 from com.framework.core.init.InitAppiumDriver import InitAppiumDriverImpl
 from appium.webdriver.common.touch_action import TouchAction
-from com.framework.core.adb.adb import AdbCmder
+from com.framework.core.adb.adb import AndroidDebugBridge
 from appium.webdriver.common.mobileby import MobileBy as By
 from com.framework.base.GetAllPathCtrl import GetAllPathController
 from com.framework.utils.reporterutils.LoggingUtil import LoggingController
@@ -31,7 +31,7 @@ PATH = lambda a: os.path.abspath(a)
 class AppiumApi(object):
 
     def __init__(self, sno):
-        self.android = AdbCmder()
+        self.android = None
         self.log4py = LoggingController()
         self.sno = sno
 
@@ -44,12 +44,13 @@ class AppiumApi(object):
         self.capturePath = None
 
     def begin(self):
+        self.android = AndroidDebugBridge()
         init = InitAppiumDriverImpl()
         self.driver = init.get_android_driver(self.sno)
 
         self.taction = TouchAction(self.driver)
         self.path_get = GetAllPathController()
-        self.xml_file_path = self.path_get.get_dumpxml_path()
+        # self.xml_file_path = self.path_get.get_dumpxml_path()
         self.capturePath = self.path_get.get_capture_path()
 
     def end(self):
@@ -102,7 +103,7 @@ class AppiumApi(object):
              '''
         isSucceed = False
         timeBegins = time.time()
-        while(time.time() - timeBegins <= timeout * 1000):
+        while time.time() - timeBegins <= timeout * 1000:
             try:
                 self.driver.switch_to_alert()
                 isSucceed = True
@@ -129,8 +130,7 @@ class AppiumApi(object):
                 self.log4py.debug("find element [" + str(value) + "] success")
                 break
             except Exception, e:
-                self.log4py.error(str(e))
-                self.log4py.debug("find element [" + str(value) + "] failure")
+                self.log4py.error("find element [" + str(value) + "] failure: " + str(e))
         self.operation_check("find_element_by_want", is_succeed)
         return element
 
@@ -727,7 +727,6 @@ class AppiumApi(object):
         """Start on the device the application specified in the desired capabilities.
         """
         pass
-
 
     def start_activity(self, app_package, app_activity, **opts):
         """Opens an arbitrary activity during a test. If the activity belongs to

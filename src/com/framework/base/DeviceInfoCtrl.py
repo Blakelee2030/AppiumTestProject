@@ -11,13 +11,13 @@
 import os
 import re
 import time
-from com.framework.core.adb.adb import AdbCmder
+from com.framework.core.adb.adb import AndroidDebugBridge
 from com.framework.utils.reporterutils.LoggingUtil import LoggingController
 
 
 class DeviceController():
     def __init__(self):
-        self.android = AdbCmder()
+        self.android = AndroidDebugBridge()
         self.log4py = LoggingController()
     '''
         获取连接上电脑的手机设备，返回一个设备名的list

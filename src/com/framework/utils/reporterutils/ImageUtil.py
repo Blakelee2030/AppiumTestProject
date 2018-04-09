@@ -15,7 +15,7 @@ import tempfile
 import os
 import shutil
 from PIL import Image
-from com.framework.core.adb.adb import AdbCmder
+from com.framework.core.adb.adb import AndroidDebugBridge
 
 PATH = lambda p: os.path.abspath(p)
 
@@ -25,7 +25,7 @@ class ImageController(object):
         """
         初始化，获取系统临时文件存放目录
         """
-        self.utils = AdbCmder()
+        self.utils = AndroidDebugBridge()
         self.tempFile = tempfile.gettempdir()
 
     def screenShot(self):

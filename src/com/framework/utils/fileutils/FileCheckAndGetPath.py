@@ -18,6 +18,7 @@ import os
 import time
 from com.framework.utils.reporterutils.LoggingUtil import LoggingController
 
+
 class FileChecKController():
 
     def __init__(self):
@@ -47,7 +48,7 @@ class FileChecKController():
                 for fl in filelist:
                     if cmp(fl, filename) == 0:    #这个字符串的比较存在风险，python3不支持，待修改
                         self.__fileabspath = os.path.join(filep, fl)
-                        self.__logger.info("查找的%s文件存在" %filename)
+                        self.__logger.info("当前项目下查找的[%s]配置文件存在." %filename)
                         return True
             return False
         except Exception, e:

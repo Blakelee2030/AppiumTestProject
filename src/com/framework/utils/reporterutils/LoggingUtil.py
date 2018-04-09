@@ -22,7 +22,8 @@ if not os.path.exists(logfilepath):
 
 # 将对应文件实例化成一个FileHandler对象，让不用级别的日志共用该Filehandler，这样做到日志打印到一个文件中
 hd = logging.FileHandler(os.path.abspath(os.path.join(logfilepath, "scripts.log")))
-handlers = {logging.DEBUG: hd,logging.INFO: hd,logging.WARNING: hd, logging.ERROR: hd}
+hds = logging.StreamHandler()
+handlers = {logging.DEBUG: [hd, hds], logging.INFO: [hd, hds],logging.WARNING: [hd, hds], logging.ERROR: [hd, hds]}
 
 
 class LoggingController(object):
@@ -32,7 +33,8 @@ class LoggingController(object):
         log_levels = handlers.keys()
         for level in log_levels:
             logger = logging.getLogger(str(level))
-            logger.addHandler(handlers[level])
+            logger.addHandler(handlers[level][0])
+            logger.addHandler(handlers[level][1])
             logger.setLevel(level)
             self.__loggers.update({level: logger})
 
@@ -54,7 +56,7 @@ class LoggingController(object):
 
     def error(self, message):
         message = self.get_log_message("ERROR", message)
-        self.__loggers[logging.ERROR].warning(message)
+        self.__loggers[logging.ERROR].error(message)
 
     def warning(self, message):
         message = self.get_log_message("WARNING", message)
