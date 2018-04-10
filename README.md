@@ -131,3 +131,4 @@ apk的安装包路径、app的启动activity、app的首页activity<br>
 3. 将driver的创建放到api封装类中，这个修改会在分支dev_171227中
 
 ## 对appium自动化框架的预想
+1. 这个项目准备停止更新了，已经被我整合到python-owl项目中了。（20180410）
